@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Periodo" table="periodo" catalog="contabilidad" optimistic-lock="version">
+        <comment>Per&#237;odos mensuales.</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="ejercicio" class="entidades.Ejercicio" fetch="select">
+            <column name="idEjercicio" not-null="true" />
+        </many-to-one>
+        <property name="anio" type="short">
+            <column name="anio" not-null="true" />
+        </property>
+        <property name="mes" type="short">
+            <column name="mes" not-null="true" />
+        </property>
+        <property name="estado" type="char">
+            <column name="estado" length="1" not-null="true" />
+        </property>
+        <property name="inicial" type="char">
+            <column name="inicial" length="1" not-null="true" />
+        </property>
+        <set name="movPeriodos" table="mov_periodo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idPeriodo" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="entidades.MovPeriodo" />
+        </set>
+        <set name="indiceInflacions" table="indice_inflacion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idPeriodo" not-null="true" />
+            </key>
+            <one-to-many class="entidades.IndiceInflacion" />
+        </set>
+    </class>
+</hibernate-mapping>

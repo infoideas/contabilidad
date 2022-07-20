@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.MovCuentaDet" table="mov_cuenta_det" catalog="contabilidad" optimistic-lock="version">
+        <comment>Detalle del movimiento de tesorer&#237;a</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="formaPago" class="entidades.FormaPago" fetch="select">
+            <column name="idFormaPago" not-null="true">
+                <comment>Forma de pago</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="movCuenta" class="entidades.MovCuenta" fetch="select">
+            <column name="idMov" not-null="true">
+                <comment>Movimiento relacionado</comment>
+            </column>
+        </many-to-one>
+        <property name="idBt" type="java.lang.Integer">
+            <column name="idBt">
+                <comment>Banco/Tarjeta</comment>
+            </column>
+        </property>
+        <property name="numBt" type="string">
+            <column name="num_bt" length="45">
+                <comment>N&#250;mero de cheque o tarjeta</comment>
+            </column>
+        </property>
+        <property name="tipoCheque" type="java.lang.Character">
+            <column name="tipo_cheque" length="1">
+                <comment>Tipo de cheque: C: Com&#250;n/ D: Diferido/E: Echeq</comment>
+            </column>
+        </property>
+        <property name="vencCheque" type="timestamp">
+            <column name="venc_cheque" length="19">
+                <comment>Vencimiento del cheque</comment>
+            </column>
+        </property>
+        <property name="valor" type="big_decimal">
+            <column name="valor" precision="20" not-null="true" />
+        </property>
+        <property name="idCartera" type="java.lang.Integer">
+            <column name="idCartera">
+                <comment>Id del movimiento de cartera relacionado para los cheques</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

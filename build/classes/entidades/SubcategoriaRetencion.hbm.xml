@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.SubcategoriaRetencion" table="subcategoria_retencion" catalog="contabilidad" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="categoriaRetencion" class="entidades.CategoriaRetencion" fetch="select">
+            <column name="idCategoria" not-null="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="100" not-null="true" />
+        </property>
+        <property name="cuentaNumero" type="string">
+            <column name="cuentaNumero" length="30" />
+        </property>
+        <set name="reciboRetencions" table="recibo_retencion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idRetencion" not-null="true" />
+            </key>
+            <one-to-many class="entidades.ReciboRetencion" />
+        </set>
+        <set name="movCuentaRets" table="mov_cuenta_ret" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idRetencion" not-null="true">
+                    <comment>Id de la retenci&#243;n relacionada (subcategor&#237;a de retenci&#243;n)</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.MovCuentaRet" />
+        </set>
+    </class>
+</hibernate-mapping>

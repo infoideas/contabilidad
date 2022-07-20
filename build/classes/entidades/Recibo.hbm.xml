@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Recibo" table="recibo" catalog="contabilidad" optimistic-lock="version">
+        <comment>Recibo de pago de solicitudes</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="cuentaFondos" class="entidades.CuentaFondos" fetch="select">
+            <column name="idCuenta" not-null="true">
+                <comment>Cuenta usada para el pago</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="empresa" class="entidades.Empresa" fetch="select">
+            <column name="idEmpresa" not-null="true" />
+        </many-to-one>
+        <many-to-one name="formaPago" class="entidades.FormaPago" fetch="select">
+            <column name="idFormaPago" not-null="true">
+                <comment>Forma de pago</comment>
+            </column>
+        </many-to-one>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true">
+                <comment>Fecha de carga</comment>
+            </column>
+        </property>
+        <property name="fecMov" type="timestamp">
+            <column name="fec_mov" length="19" not-null="true">
+                <comment>Fecha de movimiento o de pago</comment>
+            </column>
+        </property>
+        <property name="idUsuario" type="int">
+            <column name="idUsuario" not-null="true">
+                <comment>Usuario que realiza el pago</comment>
+            </column>
+        </property>
+        <property name="idBeneficiario" type="int">
+            <column name="idBeneficiario" not-null="true">
+                <comment>Beneficiario del pago</comment>
+            </column>
+        </property>
+        <property name="numCheque" type="string">
+            <column name="num_cheque" length="50" />
+        </property>
+        <property name="valor" type="big_decimal">
+            <column name="valor" precision="20" not-null="true">
+                <comment>Valor total antes de retenci&#243;n</comment>
+            </column>
+        </property>
+        <property name="valorRetencion" type="big_decimal">
+            <column name="valor_retencion" precision="20" not-null="true">
+                <comment>Suma de retenciones</comment>
+            </column>
+        </property>
+        <property name="valorTotal" type="big_decimal">
+            <column name="valor_total" precision="20" not-null="true">
+                <comment>Valor total a pagar: valor - valor_retencion</comment>
+            </column>
+        </property>
+        <property name="idAsiento" type="java.lang.Integer">
+            <column name="idAsiento">
+                <comment>Asiento relacionado con el pago</comment>
+            </column>
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="reciboRetencions" table="recibo_retencion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idRecibo" not-null="true" />
+            </key>
+            <one-to-many class="entidades.ReciboRetencion" />
+        </set>
+        <set name="reciboSols" table="recibo_sol" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idRecibo" not-null="true">
+                    <comment>Recibo</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.ReciboSol" />
+        </set>
+    </class>
+</hibernate-mapping>

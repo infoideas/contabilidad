@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.CategoriaRetencion" table="categoria_retencion" catalog="contabilidad" optimistic-lock="version">
+        <comment>Categor&#237;a de retenci&#243;n</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="empresa" class="entidades.Empresa" fetch="select">
+            <column name="idEmpresa" not-null="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="100" not-null="true" />
+        </property>
+        <set name="subcategoriaRetencions" table="subcategoria_retencion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idCategoria" not-null="true" />
+            </key>
+            <one-to-many class="entidades.SubcategoriaRetencion" />
+        </set>
+    </class>
+</hibernate-mapping>

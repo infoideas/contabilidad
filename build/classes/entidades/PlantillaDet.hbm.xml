@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.PlantillaDet" table="plantilla_det" catalog="contabilidad" optimistic-lock="version">
+        <comment>Cuentas de la plantilla</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="cuenta" class="entidades.Cuenta" fetch="select">
+            <column name="idCuenta" not-null="true" />
+        </many-to-one>
+        <many-to-one name="plantilla" class="entidades.Plantilla" fetch="select">
+            <column name="idPlantilla" not-null="true" />
+        </many-to-one>
+        <property name="dc" type="char">
+            <column name="dc" length="1" not-null="true" />
+        </property>
+        <property name="formula" type="string">
+            <column name="formula">
+                <comment>F&#243;rmula de par&#225;metros para generaci&#243;n de asientos autom&#225;ticos</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

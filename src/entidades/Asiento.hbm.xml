@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Asiento" table="asiento" catalog="contabilidad" optimistic-lock="version" lazy="false">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="ejercicio" class="entidades.Ejercicio" fetch="select">
+            <column name="idEjercicio" not-null="true" />
+        </many-to-one>
+        <many-to-one name="plantilla" class="entidades.Plantilla" fetch="select">
+            <column name="idPlantilla">
+                <comment>Plantilla usada</comment>
+            </column>
+        </many-to-one>
+        <property name="fecMov" type="timestamp">
+            <column name="fec_mov" length="19" not-null="true">
+                <comment>Fecha del asiento</comment>
+            </column>
+        </property>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true">
+                <comment>Fecha de carga del asiento</comment>
+            </column>
+        </property>
+        <property name="idUsuario" type="int">
+            <column name="idUsuario" not-null="true">
+                <comment>Usuario que carg&#243; el asiento</comment>
+            </column>
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" />
+        </property>
+        <set name="asientoDets" table="asiento_det" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan" order-by="dc desc">
+            <key>
+                <column name="idAsiento" not-null="true">
+                    <comment>Id del asiento</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.AsientoDet" />
+        </set>
+        <set name="solicituds" table="solicitud" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idAsiento">
+                    <comment>Asiento contable relacionado</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Solicitud" />
+        </set>
+    </class>
+</hibernate-mapping>

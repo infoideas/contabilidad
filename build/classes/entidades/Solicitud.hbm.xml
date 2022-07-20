@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Solicitud" table="solicitud" catalog="contabilidad" optimistic-lock="version">
+        <comment>Solicitud de pago</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="asiento" class="entidades.Asiento" fetch="select">
+            <column name="idAsiento">
+                <comment>Asiento contable relacionado</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="empresa" class="entidades.Empresa" fetch="select">
+            <column name="idEmpresa" not-null="true" />
+        </many-to-one>
+        <many-to-one name="plantilla" class="entidades.Plantilla" fetch="select">
+            <column name="idPlantilla" not-null="true">
+                <comment>Plantilla contable usada para el asiento</comment>
+            </column>
+        </many-to-one>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true" />
+        </property>
+        <property name="fecMov" type="timestamp">
+            <column name="fec_mov" length="19" not-null="true" />
+        </property>
+        <property name="idUsuario" type="int">
+            <column name="idUsuario" not-null="true">
+                <comment>Usuario que carga la solicitud</comment>
+            </column>
+        </property>
+        <property name="idBeneficiario" type="int">
+            <column name="idBeneficiario" not-null="true">
+                <comment>Id del beneficiario de la solicitud de pago</comment>
+            </column>
+        </property>
+        <property name="tipoComprobante" type="int">
+            <column name="tipoComprobante" not-null="true">
+                <comment>Tipo de comprobante</comment>
+            </column>
+        </property>
+        <property name="numPuntoVenta" type="string">
+            <column name="numPuntoVenta" length="5">
+                <comment>Punto de venta del comprobante</comment>
+            </column>
+        </property>
+        <property name="numComprobante" type="string">
+            <column name="numComprobante" length="15">
+                <comment>N&#250;mero de comprobante</comment>
+            </column>
+        </property>
+        <property name="tipoFactura" type="java.lang.Integer">
+            <column name="tipoFactura" />
+        </property>
+        <property name="tipoIva" type="int">
+            <column name="tipoIva" not-null="true" />
+        </property>
+        <property name="moneda" type="int">
+            <column name="moneda" not-null="true" />
+        </property>
+        <property name="valorGravado" type="big_decimal">
+            <column name="valor_gravado" precision="20" not-null="true">
+                <comment>Suma de los valores gravados</comment>
+            </column>
+        </property>
+        <property name="valorNoGravado" type="big_decimal">
+            <column name="valor_no_gravado" precision="20" not-null="true">
+                <comment>Suma de los valores no gravados</comment>
+            </column>
+        </property>
+        <property name="valorIva" type="big_decimal">
+            <column name="valor_iva" precision="20" not-null="true">
+                <comment>Suma de los valores de IVA</comment>
+            </column>
+        </property>
+        <property name="valorPercepcion" type="big_decimal">
+            <column name="valor_percepcion" precision="20" not-null="true">
+                <comment>Suma de los valores de percepci&#243;n</comment>
+            </column>
+        </property>
+        <property name="valorTotal" type="big_decimal">
+            <column name="valor_total" precision="20" not-null="true">
+                <comment>Valor total de la orden de pago</comment>
+            </column>
+        </property>
+        <property name="estado" type="char">
+            <column name="estado" length="1" not-null="true">
+                <comment>Estado de la solicitud: Pendiente: P/Aprobada : A/Anulada o rechazada :R</comment>
+            </column>
+        </property>
+        <property name="idUsuarioAprob" type="java.lang.Integer">
+            <column name="idUsuarioAprob">
+                <comment>Usuario que aprueba o rechaza la solicitud</comment>
+            </column>
+        </property>
+        <property name="fecProc" type="timestamp">
+            <column name="fec_proc" length="19">
+                <comment>Fecha de aprobaci&#243;n o rechazo</comment>
+            </column>
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="solicitudPercepcions" table="solicitud_percepcion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idSolicitud" not-null="true" />
+            </key>
+            <one-to-many class="entidades.SolicitudPercepcion" />
+        </set>
+        <set name="solicitudIvas" table="solicitud_iva" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idSolicitud" not-null="true" />
+            </key>
+            <one-to-many class="entidades.SolicitudIva" />
+        </set>
+        <set name="reciboSols" table="recibo_sol" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idSolicitud" not-null="true">
+                    <comment>Solicitud pagada</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.ReciboSol" />
+        </set>
+    </class>
+</hibernate-mapping>

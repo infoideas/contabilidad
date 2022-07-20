@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.MovCuenta" table="mov_cuenta" catalog="contabilidad" optimistic-lock="version">
+        <comment>Movimiento de cuenta</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="concepto" class="entidades.Concepto" fetch="select">
+            <column name="idConcepto" not-null="true">
+                <comment>Concepto del movimento</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="cuentaFondos" class="entidades.CuentaFondos" fetch="select">
+            <column name="idCuenta" not-null="true">
+                <comment>Cuenta de tesorer&#237;a relacionada</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="plantilla" class="entidades.Plantilla" fetch="select">
+            <column name="idPlantilla" not-null="true">
+                <comment>Plantilla para asiento contable</comment>
+            </column>
+        </many-to-one>
+        <property name="tipoMov" type="char">
+            <column name="tipo_mov" length="1" not-null="true">
+                <comment>Tipo de movimiento: Cobranza: C/Dep&#243;sito: D /Retiro: R/Ing. Administrativo : A</comment>
+            </column>
+        </property>
+        <property name="dc" type="char">
+            <column name="dc" length="1" not-null="true">
+                <comment>D&#233;bito: D/Cr&#233;dito: C</comment>
+            </column>
+        </property>
+        <property name="fecMov" type="timestamp">
+            <column name="fec_mov" length="19" not-null="true">
+                <comment>Fecha del movimiento</comment>
+            </column>
+        </property>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true">
+                <comment>Fecha de carga</comment>
+            </column>
+        </property>
+        <property name="idUsuario" type="int">
+            <column name="idUsuario" not-null="true">
+                <comment>Usuario que realiza el movimiento</comment>
+            </column>
+        </property>
+        <property name="idPersona" type="java.lang.Integer">
+            <column name="idPersona">
+                <comment>Persona relacionada con el movimiento</comment>
+            </column>
+        </property>
+        <property name="idMoneda" type="int">
+            <column name="idMoneda" not-null="true">
+                <comment>Moneda del movimiento</comment>
+            </column>
+        </property>
+        <property name="tipoCambio" type="big_decimal">
+            <column name="tipoCambio" precision="20" not-null="true">
+                <comment>Tipo de cambio en caso de moneda extranjera</comment>
+            </column>
+        </property>
+        <property name="valorOriginal" type="big_decimal">
+            <column name="valorOriginal" precision="20" not-null="true">
+                <comment>Valor en la moneda del movimiento</comment>
+            </column>
+        </property>
+        <property name="valor" type="big_decimal">
+            <column name="valor" precision="20" not-null="true">
+                <comment>Valor en la moneda local o de la cuenta</comment>
+            </column>
+        </property>
+        <property name="idAsiento" type="java.lang.Integer">
+            <column name="idAsiento">
+                <comment>Asiento generado por el movimiento</comment>
+            </column>
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="movCuentaRets" table="mov_cuenta_ret" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan">
+            <key>
+                <column name="idMov" not-null="true">
+                    <comment>Movimiento de tesorer&#237;a relacionado</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.MovCuentaRet" />
+        </set>
+        <set name="movCuentaDets" table="mov_cuenta_det" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan">
+            <key>
+                <column name="idMov" not-null="true">
+                    <comment>Movimiento relacionado</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.MovCuentaDet" />
+        </set>
+    </class>
+</hibernate-mapping>

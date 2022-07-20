@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Plantilla" table="plantilla" catalog="contabilidad" optimistic-lock="version" lazy="false">
+        <comment>Plantilla o asiento modelo</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="ejercicio" class="entidades.Ejercicio" fetch="select">
+            <column name="idEjercicio" not-null="true" />
+        </many-to-one>
+        <property name="numero" type="int">
+            <column name="numero" not-null="true" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" length="100" not-null="true" />
+        </property>
+        <set name="solicituds" table="solicitud" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idPlantilla" not-null="true">
+                    <comment>Plantilla contable usada para el asiento</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Solicitud" />
+        </set>
+        <set name="movCuentas" table="mov_cuenta" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idPlantilla" not-null="true">
+                    <comment>Plantilla para asiento contable</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.MovCuenta" />
+        </set>
+        <set name="plantillaParams" table="plantilla_param" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan">
+            <key>
+                <column name="idPlantilla" not-null="true" />
+            </key>
+            <one-to-many class="entidades.PlantillaParam" />
+        </set>
+        <set name="plantillaDets" table="plantilla_det" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan" order-by="dc desc">
+            <key>
+                <column name="idPlantilla" not-null="true" />
+            </key>
+            <one-to-many class="entidades.PlantillaDet" />
+        </set>
+        <set name="asientos" table="asiento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idPlantilla">
+                    <comment>Plantilla usada</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Asiento" />
+        </set>
+    </class>
+</hibernate-mapping>

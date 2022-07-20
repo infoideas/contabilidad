@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Ejercicio" table="ejercicio" catalog="contabilidad" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="empresa" class="entidades.Empresa" fetch="select">
+            <column name="idEmpresa" not-null="true" />
+        </many-to-one>
+        <property name="mesInicio" type="short">
+            <column name="mesInicio" not-null="true" />
+        </property>
+        <property name="anioInicio" type="short">
+            <column name="anioInicio" not-null="true" />
+        </property>
+        <property name="mesFin" type="short">
+            <column name="mesFin" not-null="true" />
+        </property>
+        <property name="anioFin" type="short">
+            <column name="anioFin" not-null="true" />
+        </property>
+        <set name="cuentas" table="cuenta" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEjercicio" not-null="true">
+                    <comment>Id del ejercicio contable</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Cuenta" />
+        </set>
+        <set name="centroCostos" table="centro_costo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEjercicio" not-null="true" />
+            </key>
+            <one-to-many class="entidades.CentroCosto" />
+        </set>
+        <set name="periodos" table="periodo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEjercicio" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Periodo" />
+        </set>
+        <set name="plantillas" table="plantilla" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEjercicio" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Plantilla" />
+        </set>
+        <set name="asientos" table="asiento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEjercicio" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Asiento" />
+        </set>
+    </class>
+</hibernate-mapping>

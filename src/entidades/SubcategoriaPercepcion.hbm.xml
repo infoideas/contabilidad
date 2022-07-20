@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.SubcategoriaPercepcion" table="subcategoria_percepcion" catalog="contabilidad" optimistic-lock="version">
+        <comment>Sub Categor&#237;a de Percepci&#243;n IVA</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="categoriaPercepcion" class="entidades.CategoriaPercepcion" fetch="select">
+            <column name="idCategoria" not-null="true">
+                <comment>Categor&#237;a de percepci&#243;n</comment>
+            </column>
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="100" not-null="true" />
+        </property>
+        <property name="cuentaNumero" type="string">
+            <column name="cuentaNumero" length="30">
+                <comment>Cuenta contable asociada</comment>
+            </column>
+        </property>
+        <set name="solicitudPercepcions" table="solicitud_percepcion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idPercepcion" not-null="true" />
+            </key>
+            <one-to-many class="entidades.SolicitudPercepcion" />
+        </set>
+    </class>
+</hibernate-mapping>

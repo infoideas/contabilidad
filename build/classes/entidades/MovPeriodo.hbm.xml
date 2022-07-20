@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.MovPeriodo" table="mov_periodo" catalog="contabilidad" optimistic-lock="version">
+        <comment>Guarda totales de Deb. y Cred. para cada cuenta en un per&#237;odo</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="cuenta" class="entidades.Cuenta" fetch="select">
+            <column name="cuenta" not-null="true" unique="true" />
+        </many-to-one>
+        <many-to-one name="periodo" class="entidades.Periodo" fetch="select">
+            <column name="idPeriodo" not-null="true" unique="true" />
+        </many-to-one>
+        <property name="movDebe" type="big_decimal">
+            <column name="mov_debe" precision="20" not-null="true" />
+        </property>
+        <property name="movHaber" type="big_decimal">
+            <column name="mov_haber" precision="20" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

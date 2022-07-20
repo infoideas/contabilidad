@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Cuenta" table="cuenta" catalog="contabilidad" optimistic-lock="version" lazy="false">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="ejercicio" class="entidades.Ejercicio" fetch="select">
+            <column name="idEjercicio" not-null="true">
+                <comment>Id del ejercicio contable</comment>
+            </column>
+        </many-to-one>
+        <property name="cuentaNumero" type="string">
+            <column name="cuentaNumero" length="30" not-null="true">
+                <comment>N&#250;mero de cuenta</comment>
+            </column>
+        </property>
+        <property name="cuentaNombre" type="string">
+            <column name="cuentaNombre" length="100" not-null="true">
+                <comment>Nombre de la cuenta</comment>
+            </column>
+        </property>
+        <property name="dc" type="char">
+            <column name="dc" length="1" not-null="true">
+                <comment>Saldo habitual D&#233;bito/Cr&#233;dito</comment>
+            </column>
+        </property>
+        <property name="nivel" type="short">
+            <column name="nivel" not-null="true">
+                <comment>Nivel de la cuenta en la jerarqu&#237;a</comment>
+            </column>
+        </property>
+        <property name="imputable" type="char">
+            <column name="imputable" length="1" not-null="true">
+                <comment>Es imputable si puede estar en un asiento</comment>
+            </column>
+        </property>
+        <property name="cc" type="char">
+            <column name="cc" length="1" not-null="true">
+                <comment>Tiene centro de costo en los asientos</comment>
+            </column>
+        </property>
+        <property name="ajustaInflacion" type="char">
+            <column name="ajustaInflacion" length="1" not-null="true">
+                <comment>Indica si la cuenta se ajusta por inflaci&#243;n</comment>
+            </column>
+        </property>
+        <property name="flujoFondos" type="char">
+            <column name="flujoFondos" length="1" not-null="true">
+                <comment>Indica si la cuenta afecta al flujo de fondos</comment>
+            </column>
+        </property>
+        <set name="asientoDets" table="asiento_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idCuenta" not-null="true">
+                    <comment>Cuenta contable</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.AsientoDet" />
+        </set>
+        <set name="movPeriodos" table="mov_periodo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="cuenta" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="entidades.MovPeriodo" />
+        </set>
+        <set name="plantillaDets" table="plantilla_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idCuenta" not-null="true" />
+            </key>
+            <one-to-many class="entidades.PlantillaDet" />
+        </set>
+        <set name="ivas" table="iva" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idCuentaContable">
+                    <comment>Cuenta contable asociada</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Iva" />
+        </set>
+    </class>
+</hibernate-mapping>

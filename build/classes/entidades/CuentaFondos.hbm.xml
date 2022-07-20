@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.CuentaFondos" table="cuenta_fondos" catalog="contabilidad" optimistic-lock="version"
+        lazy="false">
+        <comment>Cuentas para pagar</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="banco" class="entidades.Banco" fetch="select">
+            <column name="idBanco">
+                <comment>Banco</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="empresa" class="entidades.Empresa" fetch="select">
+            <column name="idEmpresa" not-null="true" />
+        </many-to-one>
+        <many-to-one name="moneda" class="entidades.Moneda" fetch="select">
+            <column name="idMoneda" not-null="true">
+                <comment>Moneda de la cuenta</comment>
+            </column>
+        </many-to-one>
+        <property name="tipoCuenta" type="char">
+            <column name="tipoCuenta" length="1" not-null="true">
+                <comment>Tipo de cuenta: Caja: M/ Caja de ahorro: A/Cuenta corriente :C / Fondo fijo: F</comment>
+            </column>
+        </property>
+        <property name="nombreCuenta" type="string">
+            <column name="nombreCuenta" length="100">
+                <comment>Nombre de la cuenta</comment>
+            </column>
+        </property>
+        <property name="numeroCuenta" type="string">
+            <column name="numeroCuenta" length="50">
+                <comment>N&#250;mero de cuenta del banco</comment>
+            </column>
+        </property>
+        <property name="cuentaContablePagos" type="string">
+            <column name="cuentaContablePagos" length="30">
+                <comment>Cuenta contable usada para los asientos de pago</comment>
+            </column>
+        </property>
+        <property name="numPlantillaEfec" type="java.lang.Integer">
+            <column name="numPlantillaEfec">
+                <comment>Plantilla para dep&#243;sitos en efectivo</comment>
+            </column>
+        </property>
+        <property name="numPlantillaCheques" type="java.lang.Integer">
+            <column name="numPlantillaCheques">
+                <comment>Plantilla para dep&#243;sitos en cheques</comment>
+            </column>
+        </property>
+        <set name="carteraChequeses" table="cartera_cheques" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idCuenta" not-null="true" />
+            </key>
+            <one-to-many class="entidades.CarteraCheques" />
+        </set>
+        <set name="recibos" table="recibo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idCuenta" not-null="true">
+                    <comment>Cuenta usada para el pago</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Recibo" />
+        </set>
+        <set name="movCuentas" table="mov_cuenta" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idCuenta" not-null="true">
+                    <comment>Cuenta de tesorer&#237;a relacionada</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.MovCuenta" />
+        </set>
+    </class>
+</hibernate-mapping>

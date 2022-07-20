@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 nov. 2021 10:48:19 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Empresa" table="empresa" catalog="contabilidad" optimistic-lock="version" >
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="moneda" class="entidades.Moneda" fetch="select">
+            <column name="moneda" not-null="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="100" not-null="true" />
+        </property>
+        <property name="cuit" type="string">
+            <column name="cuit" length="45" not-null="true" />
+        </property>
+        <set name="ejercicios" table="ejercicio" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEmpresa" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Ejercicio" />
+        </set>
+        <set name="recibos" table="recibo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEmpresa" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Recibo" />
+        </set>
+        <set name="categoriaPercepcions" table="categoria_percepcion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEmpresa" not-null="true" />
+            </key>
+            <one-to-many class="entidades.CategoriaPercepcion" />
+        </set>
+        <set name="cuentaFondoses" table="cuenta_fondos" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEmpresa" not-null="true" />
+            </key>
+            <one-to-many class="entidades.CuentaFondos" />
+        </set>
+        <set name="solicituds" table="solicitud" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEmpresa" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Solicitud" />
+        </set>
+        <set name="conceptos" table="concepto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEmpresa" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Concepto" />
+        </set>
+        <set name="categoriaRetencions" table="categoria_retencion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEmpresa" not-null="true" />
+            </key>
+            <one-to-many class="entidades.CategoriaRetencion" />
+        </set>
+        <set name="ivas" table="iva" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEmpresa" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Iva" />
+        </set>
+    </class>
+</hibernate-mapping>
