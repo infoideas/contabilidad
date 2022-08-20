@@ -45,7 +45,7 @@ Contributor(s):
     <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/contabilidad?zeroDateTimeBehavior=convertToNull&amp;serverTimezone=America/Buenos_Aires&amp;useSSL=FALSE</property>
     <property name="hibernate.connection.username">dba</property>
-    <property name="hibernate.connection.password">adminduende</property>
+    <property name="hibernate.connection.password">Admin*Duende*2022</property>
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.query.factory_class">org.hibernate.hql.internal.classic.ClassicQueryTranslatorFactory</property>
     <property name="hibernate.connection.characterEncoding">utf8</property>
